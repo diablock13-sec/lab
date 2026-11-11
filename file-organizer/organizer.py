@@ -1,3 +1,4 @@
+import shutil
 from pathlib import Path
 
 CATEGORIES = {
@@ -17,6 +18,14 @@ def get_category(file: Path) -> str:
     return CATEGORIES.get(file.suffix.lower(), "Lainnya")
 
 
+def organize(folder: Path) -> None:
+    for f in list_files(folder):
+        target_dir = folder / get_category(f)
+        target_dir.mkdir(exist_ok=True)
+        shutil.move(str(f), str(target_dir / f.name))
+        print(f"{f.name} -> {target_dir.name}/")
+
+
 if __name__ == "__main__":
-    for f in list_files(Path("test_folder")):
-        print(f"{f.name} -> {get_category(f)}")
+    organize(Path("test_folder"))
+
