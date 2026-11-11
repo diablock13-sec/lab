@@ -1,0 +1,21 @@
+[project]
+name = "token-counter"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "diablock13-sec", email = "diablock13@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "rich>=15.0.0",
+    "tiktoken>=0.14.0",
+    "typer>=0.29.0",
+]
+
+[project.scripts]
+token-counter = "token_counter:main"
+
+[build-system]
+requires = ["uv_build>=0.13.7,<0.14.0"]
+build-backend = "uv_build"
