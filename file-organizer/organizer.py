@@ -1,3 +1,4 @@
+import argparse
 import shutil
 from pathlib import Path
 
@@ -29,5 +30,28 @@ def organize(folder: Path, dry_run: bool = True) -> None:
             print(f"{f.name} -> {target_dir.name}/")
 
 
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="Rapikan file di sebuah folder berdasarkan ekstensi."
+    )
+    parser.add_argument(
+        "folder",
+        nargs="?",
+        default="test_folder",
+        help="folder yang dirapikan (default: test_folder)",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="hanya cetak rencana, tanpa memindah file",
+    )
+    args = parser.parse_args()
+
+    folder = Path(args.folder)
+    if not folder.is_dir():
+        parser.error(f"folder tidak ditemukan: {folder}")
+    organize(folder, dry_run=args.dry_run)
+
+
 if __name__ == "__main__":
-    organize(Path("test_folder"), dry_run=True)
+    main()
