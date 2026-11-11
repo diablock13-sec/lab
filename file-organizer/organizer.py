@@ -18,14 +18,16 @@ def get_category(file: Path) -> str:
     return CATEGORIES.get(file.suffix.lower(), "Lainnya")
 
 
-def organize(folder: Path) -> None:
+def organize(folder: Path, dry_run: bool = True) -> None:
     for f in list_files(folder):
         target_dir = folder / get_category(f)
-        target_dir.mkdir(exist_ok=True)
-        shutil.move(str(f), str(target_dir / f.name))
-        print(f"{f.name} -> {target_dir.name}/")
+        if dry_run:
+            print(f"[DRY RUN] {f.name} -> {target_dir.name}/")
+        else:
+            target_dir.mkdir(exist_ok=True)
+            shutil.move(str(f), str(target_dir / f.name))
+            print(f"{f.name} -> {target_dir.name}/")
 
 
 if __name__ == "__main__":
-    organize(Path("test_folder"))
-
+    organize(Path("test_folder"), dry_run=True)
