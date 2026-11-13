@@ -19,17 +19,30 @@ Satu folder, urut dari token terbanyak:
 
     uv run counter.py ~/proyek --top 10
 
+Memilih tokenizer:
+
+    uv run counter.py ~/proyek --encoding o200k_base
+
 ## Yang diabaikan
 
-- Folder: `.git`, `node_modules`, `__pycache__`, `.venv`
+- Folder: `.git`, `node_modules`, `__pycache__`, `.venv` (tidak ditelusuri sama sekali)
 - File: `uv.lock`, `package-lock.json`, `.env`
-- File biner dan file lebih besar dari 1 MB
+- Symlink, file biner, dan file lebih besar dari 1 MB
 
 ## Keterbatasan
 
-- **Angka ini estimasi.** Program memakai tokenizer `cl100k_base` milik OpenAI lewat
-  `tiktoken`. Tiap model punya tokenizer sendiri, jadi hitungan sebenarnya untuk Claude,
-  Gemini, atau model lain bisa berbeda.
+- **Angka ini estimasi.** Program memakai tokenizer OpenAI lewat `tiktoken`
+  (`cl100k_base` secara bawaan). Tiap model punya tokenizer sendiri, jadi hitungan
+  sebenarnya untuk Claude, Gemini, atau model lain bisa berbeda.
+- Teks seperti `<|endoftext|>` dihitung sebagai teks biasa, bukan token khusus.
+- Penggunaan pertama tiap tokenizer mengunduh datanya, jadi butuh internet sekali.
 - File yang bukan UTF-8 dibaca dengan karakter rusak diabaikan, sehingga hitungannya
   bisa sedikit meleset.
 - Jangan dipakai untuk menghitung tagihan. Pakai untuk gambaran kasar saja.
+
+## Tes
+
+    uv run pytest
+    uv run ruff check .
+
+Test memakai hitung kata sebagai pengganti tokenizer, jadi tidak butuh internet.
